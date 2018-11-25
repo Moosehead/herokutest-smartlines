@@ -4,19 +4,26 @@ require('dotenv').config();
 module.exports = {
     mode: 'universal',
     head: {
-        title: pkg.name,
+        title: 'SMARTLINESS',
+        titleTemplate: 'SMARTLINES | %s',
         htmlAttrs: {
             lang: 'en'
         },
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'description', name: 'description', content: pkg.description }
+            { hid: 'description', name: 'description', content: pkg.description },
+            { name: 'msapplication-TileColor', content: '#dd5f13' },
+            { name: 'theme-color', content: '#ffffff' }
         ],
         link: [
-            { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
             { rel: 'stylesheet', href: 'https://use.typekit.net/snp0cke.css' },
-            { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }
+            { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
+            { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+            { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+            { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+            { rel: 'manifest', href: '/site.webmanifest' },
+            { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#dd5f13' },
         ]
     },
     loading: { color: '#2f9e44' },

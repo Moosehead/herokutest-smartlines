@@ -37,6 +37,10 @@ $_auth-container: 26rem;
         grid-gap: 0;
     }
 
+    @include option(lg-gap) {
+        grid-gap: $xl-unit;
+    }
+
     @include option(reverse) {
         direction: rtl;
     }

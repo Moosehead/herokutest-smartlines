@@ -5,14 +5,14 @@
     </div>
 
     <div class="bet-example__content +pd-md">
-      <p class="+mg-0 +text-grey-6" v-if="!payout ">Select an odd to view payout example</p>
+      <p class="+mg-0 +text-grey-6" v-if="!bet ">Select an odd to view payout example</p>
       <div class="+flex +flex-direction-column" v-else>
         <div class="+flex +justify-content-space-between +text-regular +text-grey-6 +mg-b-xxs">
-          <span>{{ payout.team }}</span>
-          <span class="+flex +align-items-center"><grade-badge :grade="payout.grade" class="+mg-r-xs" /> {{ payout.direction }}{{ payout.val }}</span>
+          <span>{{ bet.team }}</span>
+          <span :class="[ bet.value.payoutDirection === '+' ? '+text-green-8' : '+text-red-8' ]">{{ bet.value.payoutDirection }}{{ bet.value.payout }}</span>
         </div>
 
-        <span class="+block +uppercase +text-sm +mg-b-sm +text-grey-5">{{ type }}</span>
+        <span class="+block +uppercase +text-sm +mg-b-sm +text-grey-5">{{ bet.type }}</span>
 
         <div class="+flex +mg-b-md">
           <v-input
@@ -27,10 +27,7 @@
             label="To Win"/>
         </div>
 
-        <span class="+block +text-base +text-regular +text-grey-7 +mg-b-xxs">Suggested bet size: ${{ suggestedBetSize }}</span>
-        <span class="+block +text-base +text-regular +text-grey-7 +mg-b-lg">Remaining Bankroll: ${{ calculatedDailyBankroll }}</span>
-
-        <v-btn button-style="primary" :label="`Place Bet on ${payout.org}`"/>
+        <v-btn button-style="primary" :label="`Place Bet on ${bet.org}`"/>
         <v-btn
           label="Clear"
           class="+block +text-center +mg-t-sm +text-primary +uppercase"
@@ -41,47 +38,29 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import GradeBadge from '@/components/grade-badge';
 
 export default {
     components: { GradeBadge },
-    props: {
-        payout: { type: Object, default: null }
-    },
     data: () => ({
-        risk: null,
+        risk: null
     }),
     computed: {
-        ...mapGetters({
-            dailyBankroll: 'dailyBankroll/dailyBankroll'
+        ...mapState({
+            bet: state => state.payoutCalculator.bet
         }),
-        suggestedBetSize() {
-            return Math.floor(this.dailyBankroll / 15);
-        },
-        calculatedDailyBankroll() {
-            if (this.risk > this.dailyBankroll) {
-                return 0;
-            }
-
-            return this.dailyBankroll - this.risk;
-        },
-        isFavored() {
-            return this.payout.direction === '+';
-        },
-        type() {
-            return this.payout.type.includes('_') ? this.payout.type.replace('_', ' ') : this.payout.type;
-        },
         totalPayout() {
             if (!this.risk) {
                 return null;
             }
 
-            const value = parseInt(this.payout.val);
+            const value = parseInt(this.bet.value.payout);
 
-            const result = this.isFavored
-                ? Math.round(this.risk * (value / 100) * 100) / 100
-                : Math.round((this.risk / (value / 100)) * 100) / 100;
+            const result =
+                this.bet.value.payoutDirection === '+'
+                    ? Math.round(this.risk * (value / 100) * 100) / 100
+                    : Math.round((this.risk / (value / 100)) * 100) / 100;
             return result.toLocaleString('en-US', {
                 style: 'decimal',
                 maximumFractionDigits: 2,
@@ -90,9 +69,10 @@ export default {
         }
     },
     methods: {
+        ...mapMutations({ setBet: 'payoutCalculator/setBet' }),
         cancelOrder() {
             this.risk = null;
-            this.$emit('clear-payout');
+            this.setBet(null);
         }
     }
 };

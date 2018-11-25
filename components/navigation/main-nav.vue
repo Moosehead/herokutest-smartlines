@@ -1,63 +1,27 @@
 <template>
-  <header class="main-nav">
+  <header class="main-nav" :class="{ '+bg-grey-3': $route.name !== 'index' }">
     <div class="container">
       <nav class="main-nav__links-container">
         <div class="main-nav__links">
           <router-link to="/">
             <img class="main-nav__logo" src="~/assets/images/logo.png" alt="Smartlines logo">
           </router-link>
-          <router-link exact-active-class="--active" to="/" class="main-nav__link">Home</router-link>
-          <router-link exact-active-class="--active" :to="{ name: 'events' }" class="main-nav__link">Events</router-link>
         </div>
       </nav>
     </div>
-    <bread-crumbs/>
   </header>
 </template>
 
-<script>
-import { mapActions, mapGetters } from 'vuex';
-import BreadCrumbs from '@/components/breadcrumbs';
-import { mixin as clickaway } from 'vue-clickaway';
-
-export default {
-    components: { BreadCrumbs },
-    mixins: [clickaway],
-    data: () => ({
-        localDailyBankroll: 0,
-        dropdown: {
-            faq: false,
-        }
-    }),
-    computed: mapGetters({
-        dailyBankroll: 'dailyBankroll/dailyBankroll'
-    }),
-    methods: {
-        ...mapActions({
-            updateDailyBankroll: 'dailyBankroll/updateDailyBankroll'
-        }),
-        saveDailyBankroll() {
-            this.updateDailyBankroll(this.localDailyBankroll);
-        },
-        toggleDropdown(ele) {
-            this.dropdown[ele] = !this.dropdown[ele];
-        },
-        hideFaq() {
-            this.dropdown.faq = false;
-        }
-    }
-};
-</script>
-
 <style lang="scss" scoped>
-$logo-width: $xl-unit * 3;
+$_logo-width: $xl-unit * 3;
 
 @include component(main-nav) {
-    background: $grey-1;
-    border-bottom: 2px solid $grey-3;
     color: $grey-7;
-    position: sticky;
+    left: 0;
+    position: absolute;
+    right: 0;
     top: 0;
+    width: 100%;
     z-index: $z-five;
 
     @include part(button) {
@@ -70,13 +34,13 @@ $logo-width: $xl-unit * 3;
 
     @include part(links-container) {
         display: flex;
+        height: $nav-height;
         justify-content: space-between;
     }
 
     @include part(logo) {
-        flex: 0 0 $logo-width;
-        margin-right: $lg-unit;
-        max-width: $logo-width;
+        flex: 0 0 $_logo-width;
+        max-width: $_logo-width;
     }
 
     @include part(dropdown) {

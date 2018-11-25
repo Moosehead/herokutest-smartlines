@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="grade"
-    :class="gradeStyle">
+  <div class="grade" :class="gradeStyle" v-tooltip="{ content: `Grade ${grade} bet by Smartlines` }">
     {{ grade }}
   </div>
 </template>
@@ -9,11 +7,14 @@
 <script>
 export default {
     props: {
-        grade: { type: String, required: true }
+        grade: { type: String, required: true },
+        character: { type: Boolean, default: false }
     },
     computed: {
         gradeStyle() {
-            return `--${this.grade.toLowerCase()}`;
+            return this.character && this.grade
+                ? `--character --${this.grade.toLowerCase()}-character`
+                : `--${this.grade.toLowerCase()}`;
         }
     }
 };
@@ -32,20 +33,46 @@ export default {
     line-height: 1;
     width: 25px;
 
+    &:hover {
+        cursor: help;
+    }
+
+    @include option(character) {
+        background: transparent !important;
+        height: unset;
+        width: unset;
+    }
+
+    @include option(a-character) {
+        color: $green-8;
+    }
+
+    @include option(b-character) {
+        color: $green-6;
+    }
+
+    @include option(c-character) {
+        color: $red-6;
+    }
+
+    @include option(d-character) {
+        color: $red-8;
+    }
+
     @include option(a) {
-        background: linear-gradient($green-4, lighten($green-6, 10%));
+        background: $green-4;
     }
 
     @include option(b) {
-        background: linear-gradient($green-2, lighten($green-4, 10%));
+        background: $green-2;
     }
 
     @include option(c) {
-        background: linear-gradient($red-2, lighten($red-4, 10%));
+        background: $red-2;
     }
 
     @include option(d) {
-        background: linear-gradient($red-4, lighten($red-6, 10%));
+        background: $red-4;
     }
 }
 </style>

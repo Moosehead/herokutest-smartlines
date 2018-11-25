@@ -1,9 +1,10 @@
 <template>
-  <div class="breadcrumbs" v-if="$route.name === 'event'">
+  <div class="breadcrumbs" v-if="$route.name === 'event-category-slug'">
     <div class="container">
-      <div class="+flex">
+      <div class="+flex +align-items-center">
         <router-link class="breadcrumbs__breadcrumb --is-link +uppercase +block" to="/events">Events</router-link>
-        <span class="breadcrumbs__breadcrumb +uppercase +block" v-if="$route.name === 'event'">{{ match }}</span>
+        <span class="+block +mg-r-sm +mg-l-sm">/</span>
+        <span class="breadcrumbs__breadcrumb +uppercase +block">{{ match }}</span>
       </div>
     </div>
   </div>
@@ -22,7 +23,6 @@ export default {
 <style lang="scss" scoped>
 @include component(breadcrumbs) {
     background: $grey-2;
-    border-bottom: 1px solid $grey-3;
     padding: $md-unit 0;
 
     @include part(breadcrumb) {
@@ -30,14 +30,6 @@ export default {
 
         @include option(is-link) {
             color: $primary;
-        }
-
-        &:not(:last-child) {
-            &::after {
-                color: $grey-6;
-                content: '/';
-                margin: 0 $sm-unit;
-            }
         }
     }
 }

@@ -5,7 +5,7 @@
     </v-btn>
 
     <transition name="fade">
-      <div class="info-badge__content +elevation-5" v-if="showInfo" v-on-clickaway="hideTooltip">
+      <div class="info-badge__content +elevation-5" :class="activePosition" v-if="showInfo" v-on-clickaway="hideTooltip">
         <p class="+mg-0">{{ content }}</p>
       </div>
     </transition>
@@ -18,9 +18,15 @@ import { mixin as clickaway } from 'vue-clickaway';
 export default {
     mixins: [clickaway],
     props: {
-        content: { type: String, required: true }
+        content: { type: String, required: true },
+        position: { type: String, default: 'center' }
     },
     data: () => ({ showInfo: false }),
+    computed: {
+        activePosition() {
+            return `--${this.position}`;
+        }
+    },
     methods: {
         hideTooltip() {
             this.showInfo = false;
@@ -46,13 +52,44 @@ export default {
         background: $white;
         border: 1px solid $grey-2;
         border-radius: $xxs-unit;
-        left: 50%;
         min-width: 220px;
         padding: $md-unit;
         position: absolute;
         top: 130%;
-        transform: translateX(-50%);
         z-index: $z-four;
+
+        @include option(center) {
+            left: 50%;
+            right: 50%;
+            transform: translateX(-50%);
+
+            &::after,
+            &::before {
+                left: 50%;
+                right: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        @include option(right) {
+            right: -$sm-unit;
+
+            &::after,
+            &::before {
+                right: $lg-unit;
+                transform: translateX(50%);
+            }
+        }
+
+        @include option(left) {
+            left: -$sm-unit;
+
+            &::after,
+            &::before {
+                left: $lg-unit;
+                transform: translateX(-50%);
+            }
+        }
 
         &::after {
             border-bottom: 7px solid $white;
@@ -60,10 +97,8 @@ export default {
             border-right: 7px solid transparent;
             content: '';
             height: 0;
-            left: 50%;
             position: absolute;
             top: -7px;
-            transform: translateX(-50%);
             width: 0;
         }
 
@@ -73,10 +108,8 @@ export default {
             border-right: 8px solid transparent;
             content: '';
             height: 0;
-            left: 50%;
             position: absolute;
             top: -8px;
-            transform: translateX(-50%);
             width: 0;
         }
     }

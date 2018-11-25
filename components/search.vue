@@ -25,7 +25,7 @@
 
           <div v-for="(category, index) in results" :key="index" class="+mg-b-md">
             <span class="search__category +uppercase +text-sm">{{ category.category }}</span>
-            <router-link v-for="(event, index) in category.events" :key="index" :to="{ name: 'event', params: { category: category.category, slug: event.slug } }">
+            <router-link v-for="(event, index) in category.events" :key="index" :to="{ name: 'event-category-slug', params: { category: category.category, slug: event.slug } }">
               <div class="search__row">
                 <div class="search__row-team +flex +align-items-center +justify-content-space-between">
                   <span class="+flex +align-items-center">
@@ -54,7 +54,7 @@
 
 <script>
 import Algolia from '@/config/algolia.js';
-import Loader from '@/components/loader';
+import Loader from '@/components/global/loader';
 import { mixin as clickaway } from 'vue-clickaway';
 
 export default {

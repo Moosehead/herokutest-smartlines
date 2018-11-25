@@ -56,3 +56,7 @@ span {
     font-weight: inherit;
     line-height: inherit;
 }
+
+@include utility(max-ch) {
+    max-width: 80ch;
+}
