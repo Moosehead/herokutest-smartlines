@@ -14,7 +14,7 @@ const odds = books.map(book => {
                 overUnder: 'O',
                 grade: grades[Math.floor(Math.random() * grades.length)],
                 created_at: Date.now(),
-                payout: Math.floor(Math.random() * 500 + 1),
+                payout: '1.95',
                 payoutDirection: '-',
                 spread: Math.floor(Math.random() * 12 + 1),
                 spreadDirection: '+'
@@ -23,7 +23,7 @@ const odds = books.map(book => {
                 overUnder: null,
                 grade: grades[Math.floor(Math.random() * grades.length)],
                 created_at: Date.now(),
-                payout: Math.floor(Math.random() * 500 + 1),
+                payout: '1.91',
                 payoutDirection: '+',
                 spread: null
             },
@@ -31,7 +31,7 @@ const odds = books.map(book => {
                 overUnder: 'O',
                 grade: grades[Math.floor(Math.random() * grades.length)],
                 created_at: Date.now(),
-                payout: Math.floor(Math.random() * 500 + 1),
+                payout: '1.91',
                 payoutDirection: '-',
                 spread: Math.floor(Math.random() * 12 + 1),
                 spreadDirection: '+'
@@ -42,7 +42,7 @@ const odds = books.map(book => {
                 overUnder: 'O',
                 grade: grades[Math.floor(Math.random() * grades.length)],
                 created_at: Date.now(),
-                payout: Math.floor(Math.random() * 500 + 1),
+                payout: '1.87',
                 payoutDirection: '-',
                 spread: Math.floor(Math.random() * 12 + 1),
                 spreadDirection: '+'
@@ -51,7 +51,7 @@ const odds = books.map(book => {
                 overUnder: null,
                 grade: grades[Math.floor(Math.random() * grades.length)],
                 created_at: Date.now(),
-                payout: Math.floor(Math.random() * 500 + 1),
+                payout: '1.91',
                 payoutDirection: '+',
                 spread: null
             },
@@ -59,7 +59,7 @@ const odds = books.map(book => {
                 overUnder: 'O',
                 grade: grades[Math.floor(Math.random() * grades.length)],
                 created_at: Date.now(),
-                payout: Math.floor(Math.random() * 500 + 1),
+                payout: '1.91',
                 payoutDirection: '-',
                 spread: Math.floor(Math.random() * 12 + 1),
                 spreadDirection: '+'
@@ -79,7 +79,7 @@ mock.onGet('/smartlines').reply(200, [
             payout: 105,
             payoutDirection: '-',
             spreadDirection: '-',
-            spread: 6
+            spread: 1.5
         },
         type: 'Total',
         grade: 'A',
