@@ -11,12 +11,12 @@ const odds = books.map(book => {
         created_at: Date.now(),
         team_1: {
             spread: {
-                overUnder: 'O',
+                overUnder: null,
                 grade: grades[Math.floor(Math.random() * grades.length)],
                 created_at: Date.now(),
                 payout: '1.95',
-                payoutDirection: '-',
-                spread: Math.floor(Math.random() * 12 + 1),
+                payoutDirection: null,
+                spread: '1.5',
                 spreadDirection: '+'
             },
             moneyline: {
@@ -24,45 +24,45 @@ const odds = books.map(book => {
                 grade: grades[Math.floor(Math.random() * grades.length)],
                 created_at: Date.now(),
                 payout: '1.91',
-                payoutDirection: '+',
+                payoutDirection: null,
                 spread: null
             },
             total: {
-                overUnder: 'O',
-                grade: grades[Math.floor(Math.random() * grades.length)],
-                created_at: Date.now(),
-                payout: '1.91',
-                payoutDirection: '-',
-                spread: Math.floor(Math.random() * 12 + 1),
-                spreadDirection: '+'
-            }
-        },
-        team_2: {
-            spread: {
                 overUnder: 'O',
                 grade: grades[Math.floor(Math.random() * grades.length)],
                 created_at: Date.now(),
                 payout: '1.87',
-                payoutDirection: '-',
+                payoutDirection: null,
                 spread: Math.floor(Math.random() * 12 + 1),
-                spreadDirection: '+'
+                spreadDirection: null
+            }
+        },
+        team_2: {
+            spread: {
+                overUnder: null,
+                grade: grades[Math.floor(Math.random() * grades.length)],
+                created_at: Date.now(),
+                payout: '1.87',
+                payoutDirection: null,
+                spread: '1.5',
+                spreadDirection: '-'
             },
             moneyline: {
                 overUnder: null,
                 grade: grades[Math.floor(Math.random() * grades.length)],
                 created_at: Date.now(),
                 payout: '1.91',
-                payoutDirection: '+',
+                payoutDirection: null,
                 spread: null
             },
             total: {
-                overUnder: 'O',
+                overUnder: 'U',
                 grade: grades[Math.floor(Math.random() * grades.length)],
                 created_at: Date.now(),
-                payout: '1.91',
-                payoutDirection: '-',
+                payout: '1.95',
+                payoutDirection: null,
                 spread: Math.floor(Math.random() * 12 + 1),
-                spreadDirection: '+'
+                spreadDirection: null
             }
         },
     };
@@ -76,9 +76,9 @@ mock.onGet('/smartlines').reply(200, [
         book: 'Bodog',
         value: {
             overUnder: 'O',
-            payout: 105,
-            payoutDirection: '-',
-            spreadDirection: '-',
+            payout: ' 2.05',
+            payoutDirection: null,
+            spreadDirection: null,
             spread: 1.5
         },
         type: 'Total',
@@ -93,8 +93,8 @@ mock.onGet('/smartlines').reply(200, [
         book: 'Pinnacle',
         value: {
             overUnder: 'U',
-            payout: 155,
-            payoutDirection: '-',
+            payout:  1.83,
+            payoutDirection: null,
             spreadDirection: '-',
             spread: 1.5
         },
@@ -110,8 +110,8 @@ mock.onGet('/smartlines').reply(200, [
         book: 'Sports Interaction',
         value: {
             overUnder: null,
-            payout: 180,
-            payoutDirection: '+',
+            payout:  2.80,
+            payoutDirection: null,
             spreadDirection: '+',
             spread: null
         },
@@ -127,7 +127,7 @@ mock.onGet('/smartlines').reply(200, [
         book: 'Sports Interaction',
         value: {
             overUnder: null,
-            payout: 120,
+            payout: 2.20,
             payoutDirection: '+',
             spreadDirection: '+',
             spread: 6.5
@@ -159,13 +159,13 @@ mock.onGet('/events').reply(200, [
                     city: 'Toronto',
                     team_name: 'Maple Leafs',
                     name_short: 'TOR',
-                    record: '40-5-1',
+                    record: '16-8-0',
                     logo:
                         'https://images.rogersdigitalmedia.com/www.sportsnet.ca/team_logos/90x90/hockey/nhl/toronto-maple-leafs.png',
                     division_rank: 1,
                     power_rank: 1,
                     division: 'Atlantic',
-                    last_10: '8-1-0'
+                    last_10: '7-3-0'
                 },
                 team_2: {
                     full_name: 'Montreal Canadians',
@@ -174,13 +174,13 @@ mock.onGet('/events').reply(200, [
                     city: 'Toronto',
                     team_name: 'Canadiens',
                     name_short: 'MTL',
-                    record: '5-40-1',
+                    record: '11-8-5',
                     logo:
                         'https://images.rogersdigitalmedia.com/www.sportsnet.ca/team_logos/90x90/hockey/nhl/montreal-canadiens.png',
                     division_rank: 10,
                     power_rank: 13,
                     division: 'Atlantic',
-                    last_10: '8-1-0'
+                    last_10: '3-4-3'
                 }
             },
             {
@@ -199,13 +199,13 @@ mock.onGet('/events').reply(200, [
                     city: 'Calgary',
                     team_name: 'Flames',
                     name_short: 'CAL',
-                    record: '40-5-1',
+                    record: '14-9-1',
                     logo:
                         'https://images.rogersdigitalmedia.com/www.sportsnet.ca/team_logos/200x200/hockey/nhl/calgary-flames.png',
                     division_rank: 5,
                     power_rank: 4,
-                    division: 'Atlantic',
-                    last_10: '8-1-0'
+                    division: 'Pacific',
+                    last_10: '6-4-0'
                 },
                 team_2: {
                     full_name: 'Buffalo Sabres',
@@ -214,13 +214,13 @@ mock.onGet('/events').reply(200, [
                     city: 'Buffalo',
                     team_name: 'Sabres',
                     name_short: 'BUF',
-                    record: '5-40-1',
+                    record: '16-6-2',
                     logo:
                         'https://images.rogersdigitalmedia.com/www.sportsnet.ca/team_logos/200x200/hockey/nhl/buffalo-sabres.png',
                     division_rank: 12,
                     power_rank: 22,
                     division: 'Atlantic',
-                    last_10: '8-1-0'
+                    last_10: '9-1-0'
                 }
             },
             {
@@ -239,13 +239,13 @@ mock.onGet('/events').reply(200, [
                     city: 'Washington',
                     team_name: 'Capitals',
                     name_short: 'WAS',
-                    record: '24-5-1',
+                    record: '13-7-3',
                     logo:
                         'https://images.rogersdigitalmedia.com/www.sportsnet.ca/team_logos/200x200/hockey/nhl/washington-capitals.png',
                     division_rank: 3,
                     power_rank: 4,
-                    division: 'Atlantic',
-                    last_10: '8-1-0'
+                    division: 'Metropolitan',
+                    last_10: '7-3-0'
                 },
                 team_2: {
                     full_name: 'Boston Bruins',
@@ -254,13 +254,13 @@ mock.onGet('/events').reply(200, [
                     city: 'Boston',
                     team_name: 'Bruins',
                     name_short: 'BOS',
-                    record: '30-2-11',
+                    record: '13-6-4',
                     logo:
                         'https://images.rogersdigitalmedia.com/www.sportsnet.ca/team_logos/200x200/hockey/nhl/boston-bruins.png',
                     division_rank: 6,
                     power_rank: 15,
                     division: 'Atlantic',
-                    last_10: '8-1-0'
+                    last_10: '6-2-2'
                 }
             },
         ]
@@ -284,13 +284,13 @@ mock.onGet('/events').reply(200, [
                     city: 'Toronto',
                     team_name: 'Blue Jays',
                     name_short: 'TOR',
-                    record: '40-5-1',
+                    record: '73-89',
                     logo:
                         'https://images.rogersdigitalmedia.com/www.sportsnet.ca/team_logos/90x90/baseball/mlb/toronto-blue-jays.png',
                     division_rank: 1,
                     power_rank: 1,
-                    division: 'Atlantic',
-                    last_10: '8-1-0'
+                    division: 'AL East',
+                    last_10: '4-6'
                 },
                 team_2: {
                     full_name: 'New York Yankees',
@@ -299,13 +299,13 @@ mock.onGet('/events').reply(200, [
                     city: 'New York',
                     team_name: 'Yankees',
                     name_short: 'NYY',
-                    record: '5-40-1',
+                    record: '100-62',
                     logo:
                         'https://images.rogersdigitalmedia.com/www.sportsnet.ca/team_logos/90x90/baseball/mlb/new-york-yankees.png',
-                    division_rank: 8,
-                    power_rank: 18,
-                    division: 'Atlantic',
-                    last_10: '8-1-0'
+                    division_rank: 2,
+                    power_rank: 2,
+                    division: 'AL East',
+                    last_10: '47-34'
                 }
             }
         ]
@@ -329,13 +329,13 @@ mock.onGet('/events').reply(200, [
                     city: 'Atlanta',
                     team_name: 'Falcons',
                     name_short: 'ATL',
-                    record: '1-0-0',
+                    record: '4-7-0',
                     logo:
                         'https://images.rogersdigitalmedia.com/www.sportsnet.ca/team_logos/200x200/football/nfl/atlanta-falcons.png',
-                    division_rank: 1,
-                    power_rank: 1,
-                    division: 'Atlantic',
-                    last_10: '1-0-0'
+                    division_rank: 3,
+                    power_rank: 25,
+                    division: 'NFC South',
+                    last_10: '3-7-0'
                 },
                 team_2: {
                     full_name: 'Philadelphia Eagles',
@@ -344,13 +344,13 @@ mock.onGet('/events').reply(200, [
                     city: 'Philadelphia',
                     team_name: 'Eagles',
                     name_short: 'PHL',
-                    record: '0-0-1',
+                    record: '5-6-0',
                     logo:
                         'https://images.rogersdigitalmedia.com/www.sportsnet.ca/team_logos/200x200/football/nfl/philadelphia-eagles.png',
                     division_rank: 8,
                     power_rank: 18,
-                    division: 'Atlantic',
-                    last_10: '0-0-1'
+                    division: 'NFC East',
+                    last_10: '5-5-0'
                 }
             },
             {
@@ -369,13 +369,13 @@ mock.onGet('/events').reply(200, [
                     city: 'Buffalo',
                     team_name: 'Bills',
                     name_short: 'BUF',
-                    record: '1-0-0',
+                    record: '4-7-0',
                     logo:
                         'https://images.rogersdigitalmedia.com/www.sportsnet.ca/team_logos/200x200/football/nfl/buffalo-bills.png',
-                    division_rank: 5,
-                    power_rank: 4,
-                    division: 'Atlantic',
-                    last_10: '0-0-1'
+                    division_rank: 3,
+                    power_rank: 19,
+                    division: 'AFC East',
+                    last_10: '4-6-0'
                 },
                 team_2: {
                     full_name: 'Baltimore Ravens',
@@ -384,13 +384,13 @@ mock.onGet('/events').reply(200, [
                     city: 'Baltimore',
                     team_name: 'Ravens',
                     name_short: 'BAL',
-                    record: '0-0-1',
+                    record: '6-5-0',
                     logo:
                         'https://images.rogersdigitalmedia.com/www.sportsnet.ca/team_logos/200x200/football/nfl/baltimore-ravens.png',
                     division_rank: 2,
-                    power_rank: 4,
-                    division: 'Atlantic',
-                    last_10: '1-0-0'
+                    power_rank: 6,
+                    division: 'AFC North',
+                    last_10: '6-4-0'
                 }
             }
         ]
