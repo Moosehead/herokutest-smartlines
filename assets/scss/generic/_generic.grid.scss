@@ -1,5 +1,3 @@
-$_auth-container: 26rem;
-
 @include component(container) {
     margin-left: auto;
     margin-right: auto;
@@ -17,10 +15,6 @@ $_auth-container: 26rem;
 
     @include option(small) {
         max-width: $g-small;
-    }
-
-    @include option(auth) {
-        max-width: $_auth-container;
     }
 
     @include option(fluid) {

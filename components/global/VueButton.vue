@@ -54,11 +54,11 @@ export default {
     text-transform: uppercase;
 
     @include option(error) {
-        border-color: $red-9;
-        color: $red-9;
+        background-color: $red-9;
+        color: $white;
 
         &:hover {
-            background: $red-9;
+            background: $red-7;
             color: $grey-1;
         }
     }
@@ -68,18 +68,18 @@ export default {
         color: $white;
 
         &:hover {
-            background: $primary;
+            background: $primary-light;
             color: $white;
         }
     }
 
     @include option(success) {
-        border-color: $green-7;
-        color: $green-7;
+        background-color: $green-9;
+        color: $white;
 
         &:hover {
-            background: $green-7;
-            color: $grey-2;
+            background-color: $green-7;
+            color: $grey-1;
         }
     }
 

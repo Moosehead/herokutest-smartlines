@@ -1,20 +1,19 @@
 <template>
-  <div class="table-header grid +align-items-center +border-b-grey-3 +pd-sm">
-    <div class="col-2 +uppercase +text-sm +text-grey-6">Date</div>
-    <div class="col-4 +uppercase +text-sm +text-grey-6">Teams</div>
+  <div class="table-header grid +align-items-center +border-b-grey-3">
+    <div class="col-6 +uppercase +text-sm +text-grey-6 +pd-sm">Teams</div>
     <div class="col-2 +uppercase +text-sm +text-grey-6">
-      <div class="+flex +align-items-center">
+      <div class="+flex +align-items-center +pd-sm">
         Moneyline
         <info-badge class="+mg-l-sm" content="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vero, asperiores."/>
       </div>
     </div>
-    <div class="col-2 +uppercase +text-sm +text-grey-6">
+    <div class="col-2 +uppercase +text-sm +text-grey-6 +pd-sm">
       <div class="+flex +align-items-center">
         Spread
         <info-badge class="+mg-l-sm" content="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vero, asperiores."/>
       </div>
     </div>
-    <div class="col-2 +uppercase +text-sm +text-grey-6">
+    <div class="col-2 +uppercase +text-sm +text-grey-6 +pd-sm">
       <div class="+flex +align-items-center">
         Total
         <info-badge class="+mg-l-sm" position="right" content="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vero, asperiores."/>
@@ -36,6 +35,7 @@ export default {
     background: $white;
     position: sticky;
     top: 0;
+    z-index: $z-three;
 
     @include tablet() {
         display: none;

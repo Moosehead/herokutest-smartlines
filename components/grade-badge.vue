@@ -1,6 +1,10 @@
 <template>
-  <div class="grade" :class="gradeStyle" v-tooltip="{ content: `Grade ${grade} bet by Smartlines` }">
-    {{ grade }}
+  <div class="grade" v-tooltip.bottom="{ content: `Bet rated ${rank + 1}/${this.rating.length}` }">
+    <div
+      class="grade__tile"
+      :class="[ value.active ? value.color : null ]"
+      v-for="(value, index) in rating"
+      :key="index"/>
   </div>
 </template>
 
@@ -10,69 +14,73 @@ export default {
         grade: { type: String, required: true },
         character: { type: Boolean, default: false }
     },
+    data: () => ({
+        rank: 0
+    }),
     computed: {
-        gradeStyle() {
-            return this.character && this.grade
-                ? `--character --${this.grade.toLowerCase()}-character`
-                : `--${this.grade.toLowerCase()}`;
+        rating() {
+            const grades = ['D', 'C', 'B', 'A'];
+            const rating = grades.indexOf(this.grade);
+            this.getRating(rating);
+
+            return grades.map((grade, index) => {
+                return {
+                    grade,
+                    rating: rating,
+                    color: this.getStarColor(rating),
+                    active: index <= rating
+                };
+            });
         }
-    }
+    },
+    methods: {
+        getRating(rating) {
+            this.rank = rating;
+        },
+        getStarColor(star) {
+            if(star <= 1) {
+                return '+bg-yellow-6';
+            }
+
+            if(star === 2) {
+                return '+bg-green-6';
+            }
+
+            return '+bg-primary';
+        },
+    },
 };
 </script>
 
 <style lang="scss" scoped>
 @include component(grade) {
-    align-items: center;
-    background: linear-gradient($grey-3, lighten($grey-5, 10%));
-    border-radius: 50%;
-    color: $grey-9;
+    border-radius: 4px;
     display: flex;
-    font-size: $sm-unit;
-    height: 25px;
-    justify-content: center;
-    line-height: 1;
-    width: 25px;
+    overflow: hidden;
+    width: $xxl-unit;
 
-    &:hover {
-        cursor: help;
+    @include part(tile) {
+        background: $grey-4;
+        height: $xxs-unit;
+        width: $base-unit;
+
+        &:not(:last-of-type) {
+            margin-right: 2px;
+        }
+
+        @include option(active) {
+            background: $green-6;
+        }
     }
 
-    @include option(character) {
-        background: transparent !important;
-        height: unset;
-        width: unset;
-    }
+    @include part(icon) {
+        color: $grey-4;
+        font-size: $base-unit;
+        width: $base-unit;
 
-    @include option(a-character) {
-        color: $green-8;
-    }
-
-    @include option(b-character) {
-        color: $green-6;
-    }
-
-    @include option(c-character) {
-        color: $red-6;
-    }
-
-    @include option(d-character) {
-        color: $red-8;
-    }
-
-    @include option(a) {
-        background: $green-4;
-    }
-
-    @include option(b) {
-        background: $green-2;
-    }
-
-    @include option(c) {
-        background: $red-2;
-    }
-
-    @include option(d) {
-        background: $red-4;
+        @include option(active) {
+            color: #ffce48;
+        }
     }
 }
 </style>

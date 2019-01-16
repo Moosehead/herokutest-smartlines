@@ -1,35 +1,56 @@
 <template>
   <div class="hero-small">
     <div class="container">
-      <div class="+uppercase +mg-b-xs +flex +justify-content-space-between">
-        <div class="+flex +flex-direction-column">
-          <h1 class="+flex +flex-direction-column">
-            <span class="+mg-b-sm +text-base +text-grey-3">Comparing Book values for</span>
-            <span class="+text-lg +text-white +mg-b-sm">{{ event.team_1.full_name }} vs {{ event.team_2.full_name }}</span>
-          </h1>
-
-          <div class="+flex">
-            <span class="+text-sm +text-grey-3 +flex +align-items-center +mg-r-sm">
-              <i class="material-icons +text-md +mg-r-xxs">calendar_today</i>
-              <span>{{ event.date | date }}</span>
-            </span>
-            <span class="+text-sm +text-grey-3 +flex +align-items-center">
-              <i class="material-icons +text-md +mg-r-xxs">alarm</i>
-              <span>{{ event.starting_time }}</span>
-            </span>
+      <div class="+uppercase +mg-b-xxl +pd-t-xl +flex +justify-content-center">
+        <h1 class="+flex +justify-content-center">
+          <div class="+flex +text-grey-3 +align-items-center">
+            <div class="+flex +flex-direction-column +align-items-center +width-14rem">
+              <team-badge class="+mg-b-md +elevation-5 +width-100px +height-100px" :team="event.team_name1" :sport="event.league" />
+              <span class="+text-base +text-center +text-overflow">{{ event.team_name1 }}</span>
+            </div>
+            <span class="+mg-l-sm +mg-r-sm +text-base">VS</span>
+            <div class="+flex +flex-direction-column +align-items-center +width-14rem">
+              <team-badge class="+mg-b-md +elevation-5 +width-100px +height-100px" :team="event.team_name2" :sport="event.league" />
+              <span class="+text-base +text-center +text-overflow">{{ event.team_name2 }}</span>
+            </div>
           </div>
+        </h1>
+      </div>
+
+      <div class="+flex +justify-content-space-between">
+        <div class="+flex">
+          <span class="+text-grey-3 +flex +align-items-center +mg-r-sm">
+            <i class="material-icons +text-md +mg-r-xxs">calendar_today</i>
+            <span>{{ gameDate }}</span>
+          </span>
+          <span class="+text-grey-3 +flex +align-items-center">
+            <i class="material-icons +text-md +mg-r-xxs">alarm</i>
+            <span>{{ event.starting_time | time }}</span>
+          </span>
         </div>
 
-        <span class="+flex +align-self-flex-end +text-base +text-grey-3">Last updated: {{ event.created_at | date }}</span>
+        <span class="+flex +uppercase +align-self-flex-end +text-base +text-grey-3">Last updated: {{ lastUpdated }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import moment from 'moment';
+import TeamBadge from '@/components/team-badge';
+
 export default {
+    components: { TeamBadge },
     props: {
         event: { type: Object, required: true }
+    },
+    computed: {
+        lastUpdated() {
+            return moment(this.event.last_updated).format('MMMM Do YYYY, h:mm:ss a');
+        },
+        gameDate() {
+            return moment(this.event.starting_time).format('MMMM Do YYYY');
+        }
     }
 };
 </script>

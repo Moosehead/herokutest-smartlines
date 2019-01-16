@@ -23,7 +23,7 @@ module.exports = {
             { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
             { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
             { rel: 'manifest', href: '/site.webmanifest' },
-            { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#dd5f13' },
+            { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#dd5f13' }
         ]
     },
     loading: { color: '#2f9e44' },
@@ -42,8 +42,7 @@ module.exports = {
     ],
     env: {
         ALGOLIA_API_KEY: process.env.ALGOLIA_API_KEY,
-        ALGOLIA_APPLICATION_KEY: process.env.ALGOLIA_APPLICATION_KEY,
-        BASE_URL: process.env.BASE_URL
+        ALGOLIA_APPLICATION_KEY: process.env.ALGOLIA_APPLICATION_KEY
     },
     axios: {
         baseURL: process.env.BASE_URL

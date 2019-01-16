@@ -1,9 +1,18 @@
 <template>
-  <button class="pill" @click="setBet(bet)">
-    <grade-badge :grade="bet.value.grade" class="+flex-none +mg-r-xs" />
-    <span class="+text-grey-6 +text-sm +text-bold">
-      {{ bet.value.overUnder }} {{ bet.value.spreadDirection }}{{ bet.value.spread }} <span :class="[ bet.value.payoutDirection === '+' ? '+text-green-8' : '+text-red-8' ]">{{ bet.value.payoutDirection }}{{ bet.value.payout }}</span>
-    </span>
+  <button class="pill +text-left +flex" @click="setBet(calculatorData)">
+    <div class="pill__book +mg-r-xs" v-if="showBookIcon">
+      <img class="+height-24px" :src="bookLogo" alt="Book logo">
+    </div>
+
+    <div class="+flex-1" v-if="betType">
+      <span class="+flex +text-regular +mg-b-xs +text-sm">
+        <span class="+mg-r-xxs +text-grey-6" v-if="type === 'total'">({{ team === 'team_1' ? 'O' : 'U' }} {{ totalValue }})</span>
+        <span class="+mg-r-xxs +text-grey-6" v-if="type === 'spread'">({{ betType.handicap }})</span>
+        <span>{{ roundedValue }}</span>
+      </span>
+
+      <grade-badge :grade="betType.grade" />
+    </div>
   </button>
 </template>
 
@@ -14,24 +23,71 @@ import GradeBadge from '@/components/grade-badge';
 export default {
     components: { GradeBadge },
     props: {
-        bet: { type: Object, required: true }
+        showBookIcon: { type: Boolean, default: true },
+        bet: { type: Object, required: true },
+        org: { type: String, required: true },
+        teamName: { type: String, required: true },
+        team: { type: String, default: null },
+        type: { type: String, required: true }
     },
-    methods: mapMutations({ setBet: 'payoutCalculator/setBet' })
+    computed: {
+        bookLogo() {
+            if(this.type === 'total') {
+                return this.team === 'team_1'
+                    ? `/book-icons/${this.bet.over_pref.best_book.toLowerCase().split(' ').join('-')}.jpg`
+                    : `/book-icons/${this.bet.under_pref.best_book.toLowerCase().split(' ').join('-')}.jpg`;
+            }
+
+            return `/book-icons/${this.bet[this.type].best_book.toLowerCase().split(' ').join('-')}.jpg`;
+        },
+        totalValue() {
+            if(this.betType.threshold) {
+                return this.betType.threshold;
+            }
+
+            return this.team === 'team_1' ? this.bet.value :this.bet.value;
+        },
+        betType() {
+            if(this.type === 'total') {
+                return this.team === 'team_1' ? this.bet.over_pref : this.bet.under_pref;
+            }
+
+            return this.bet[this.type];
+        },
+        roundedValue() {
+            return (Math.round(this.betType.value * 100) / 100).toFixed(2);
+        },
+        calculatorData() {
+            return { ...this.bet, team: this.teamName, type: this.type, org: this.org };
+        }
+    },
+    methods: {
+        ...mapMutations({ setBet: 'payoutCalculator/setBet' }),
+    },
 };
 </script>
 
 <style lang="scss" scoped>
 @include component(pill) {
-    align-items: center;
-    border: 1px solid $grey-2;
-    border-radius: 50px;
+    background: transparent;
+    border: 0;
+    border-radius: $xxs-unit;
     cursor: pointer;
-    display: inline-flex;
-    flex: none;
-    justify-content: space-between;
-    min-width: 120px;
-    padding: $xxs-unit;
-    padding-right: $sm-unit;
+    padding: $sm-unit;
+
+    @include part(book) {
+        border-radius: 50%;
+        flex: none;
+        height: $lg-unit;
+        overflow: hidden;
+        width: $lg-unit;
+
+        > img {
+            height: 100%;
+            object-fit: cover;
+            width: 100%;
+        }
+    }
 
     &:hover {
         background: $grey-1;

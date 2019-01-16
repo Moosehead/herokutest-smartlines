@@ -1,9 +1,9 @@
 <template>
   <div class="category-card +elevation-5">
     <div class="category-card__header">
-      <h2 class="+text-base +text-bold +uppercase +text-grey-6">Top {{ category.category }} Books</h2>
+      <h2 class="+text-base +text-bold +uppercase +text-grey-6">Top Books for {{ category }}</h2>
       <div class="+flex">
-        <span class="category-card__count +mg-r-xs">{{ category.events.length }}</span>
+        <span class="category-card__count +mg-r-xs">{{ sortedEvents.length }}</span>
         <button @click="showPanel = !showPanel" class="+btn-reset +mg-l-xxs +cursor-pointer" v-tooltip="showPanel ? 'Collapse' : 'Expand'">
           <i class="material-icons">{{ showPanel ? 'expand_less' : 'expand_more' }}</i>
         </button>
@@ -12,33 +12,10 @@
 
     <transition @enter="velocityEnter" @leave="velocityLeave" :css="false">
       <div class="col-12" v-if="showPanel">
-        <category-card-header/>
-
-        <div class="category-card__table-row grid +pd-sm" v-for="(event, index) in category.events" :key="`top-row-${index}`">
-          <div class="col-2 +flex +flex-direction-column +justify-content-center">
-            <span class="+block +text-base +mg-b-sm">{{ event.date | date }}</span>
-            <span class="+block +text-grey-5 +text-sm">{{ event.starting_time }}</span>
-          </div>
-
-          <div class="col-4 +flex +flex-direction-column">
-            <div class="+height-38px +flex +align-items-center +mg-b-sm +flex">
-              <img :src="event.team_1.logo" class="category-card__logo +mg-r-xs" :alt="event.team_1.full_name">
-              <span class="+text-overflow">{{ event.team_1.team_name }}</span>
-            </div>
-            <div class="+height-38px +flex +align-items-center +flex">
-              <img :src="event.team_2.logo" class="category-card__logo +mg-r-xs" :alt="event.team_2.full_name">
-              <span class="+text-overflow">{{ event.team_2.team_name }}</span>
-            </div>
-          </div>
-
-          <category-card-column :teams="[event.team_1.full_name, event.team_2.full_name]" :bet="event.odds[0]" type="moneyline"/>
-          <category-card-column :teams="[event.team_1.full_name, event.team_2.full_name]" :bet="event.odds[0]" type="spread"/>
-          <category-card-column :teams="[event.team_1.full_name, event.team_2.full_name]" :bet="event.odds[0]" type="total"/>
-          <category-card-footer class="col-12" :event="event" :category="category"/>
-        </div>
+        <category-card-header />
+        <category-row :event="event" v-for="event in sortedEvents" :key="event.id"/>
       </div>
     </transition>
-
   </div>
 </template>
 
@@ -47,17 +24,33 @@ if (process.browser) {
     const Velocity = require('velocity-animate');
 }
 
+import { keys } from 'lodash';
+import moment from 'moment';
 import CategoryCardHeader from '@/components/category/category-card-header';
+import CategoryRow from '@/components/category/category-row';
 import CategoryCardColumn from '@/components/category/category-card-column';
 import CategoryCardFooter from '@/components/category/category-card-footer';
 
 export default {
-    components: { CategoryCardHeader, CategoryCardFooter, CategoryCardColumn },
+    components: { CategoryCardHeader, CategoryCardFooter, CategoryCardColumn, CategoryRow },
     props: {
-        category: { type: Object, required: true }
+        events: { type: Array, required: true },
+        category: { type: String, required: true },
     },
-    data: () => ({ showPanel: true }),
+    data: () => ({
+        showPanel: true,
+    }),
+    computed: {
+        sortedEvents() {
+            return this.events
+                .filter(event => moment(event.starting_time).isSame(moment(), 'days'))
+                .sort((a, b) => moment(a.starting_time) - moment(b.starting_time));
+        },
+    },
     methods: {
+        dateFormatter(date) {
+            return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+        },
         velocityEnter(el, done) {
             Velocity(el, 'slideDown', {
                 easing: 'linear',
@@ -79,16 +72,17 @@ export default {
 <style lang="scss" scoped>
 @include component(category-card) {
     background: $white;
+    border-radius: $xxs-unit;
 
     &:not(:last-child) {
-        border-radius: 4px;
+        border-radius: $xxs-unit;
         margin-bottom: $xl-unit;
     }
 
     @include part(header) {
         align-items: center;
         background: $grey-1;
-        border-radius: 4px 4px 0 0;
+        border-radius: $xxs-unit $xxs-unit 0 0;
         display: flex;
         justify-content: space-between;
         min-height: 57px;
@@ -105,19 +99,6 @@ export default {
         height: 25px;
         justify-content: center;
         width: 25px;
-    }
-
-    @include part(logo) {
-        border: 1px solid $grey-2;
-        border-radius: 50%;
-        height: 25px;
-        width: 25px;
-
-        > img {
-            height: 100%;
-            object-fit: cover;
-            width: 100%;
-        }
     }
 
     @include part(split-column) {
@@ -142,7 +123,7 @@ export default {
 
     @include part(category) {
         background: $white;
-        border-radius: 4px;
+        border-radius: $xxs-unit;
         box-shadow: $elevation-5;
 
         &:not(:first-of-type) {

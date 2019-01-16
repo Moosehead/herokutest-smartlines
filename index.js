@@ -128,7 +128,7 @@ mock.onGet('/smartlines').reply(200, [
         value: {
             overUnder: null,
             payout: 2.20,
-            payoutDirection: '',
+            payoutDirection: '+',
             spreadDirection: '+',
             spread: 6.5
         },

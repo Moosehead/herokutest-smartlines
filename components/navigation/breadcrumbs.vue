@@ -1,8 +1,8 @@
 <template>
-  <div class="breadcrumbs" v-if="$route.name === 'event-category-slug'">
+  <div class="breadcrumbs" v-if="$route.name === 'event-id-slug'">
     <div class="container">
       <div class="+flex +align-items-center">
-        <router-link class="breadcrumbs__breadcrumb --is-link +uppercase +block" to="/events">Events</router-link>
+        <nuxt-link class="breadcrumbs__breadcrumb --is-link +uppercase +block" to="/events">Events</nuxt-link>
         <span class="+block +mg-r-sm +mg-l-sm">/</span>
         <span class="breadcrumbs__breadcrumb +uppercase +block">{{ match }}</span>
       </div>

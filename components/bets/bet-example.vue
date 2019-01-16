@@ -5,12 +5,14 @@
     </div>
 
     <div class="bet-example__content +pd-md">
-      <p class="+mg-0 +text-grey-6" v-if="!bet ">Select an odd to view payout example</p>
+      <p class="+mg-0 +text-grey-6" v-if="!bet">Select an odd to view payout example</p>
       <div class="+flex +flex-direction-column" v-else>
         <div class="+flex +justify-content-space-between +text-regular +text-grey-6 +mg-b-xxs">
           <span>{{ bet.team }}</span>
-          <span :class="[ bet.value.payoutDirection === '+' ? '+text-green-8' : '+text-red-8' ]">{{ bet.value.payoutDirection }}{{ bet.value.payout }}</span>
+          <span>{{ currentBet.value }}</span>
         </div>
+
+        <grade-badge :grade="currentBet.grade" class="+mg-b-xxs"/>
 
         <span class="+block +uppercase +text-sm +mg-b-sm +text-grey-5">{{ bet.type }}</span>
 
@@ -20,6 +22,7 @@
             v-model="risk"
             class="+mg-r-sm"
             label="Risk"/>
+
           <v-input
             icon="attach_money"
             v-model="totalPayout"
@@ -27,7 +30,10 @@
             label="To Win"/>
         </div>
 
-        <v-btn button-style="primary" :label="`Place Bet on ${bet.org}`"/>
+        <a :href="bet.org | url" class="+block +width-100percent" target="_blank">
+          <v-btn button-style="success" class="+width-100percent" :label="`Place Bet on ${bet.org}`"/>
+        </a>
+
         <v-btn
           label="Clear"
           class="+block +text-center +mg-t-sm +text-primary +uppercase"
@@ -50,18 +56,19 @@ export default {
         ...mapState({
             bet: state => state.payoutCalculator.bet
         }),
+        currentBet() {
+            if(this.bet.type === 'total') {
+                return this.bet.team === 'team_1' ? this.bet.over_pref : this.bet.under_pref;
+            }
+
+            return this.bet[this.bet.type];
+        },
         totalPayout() {
             if (!this.risk) {
                 return null;
             }
 
-            const value = parseInt(this.bet.value.payout);
-
-            const result =
-                this.bet.value.payoutDirection === '+'
-                    ? Math.round(this.risk * (value / 100) * 100) / 100
-                    : Math.round((this.risk / (value / 100)) * 100) / 100;
-            return result.toLocaleString('en-US', {
+            return (Math.round((parseInt(this.risk) * this.currentBet.value) * 100) / 100).toLocaleString('en-US', {
                 style: 'decimal',
                 maximumFractionDigits: 2,
                 minimumFractionDigits: 2
